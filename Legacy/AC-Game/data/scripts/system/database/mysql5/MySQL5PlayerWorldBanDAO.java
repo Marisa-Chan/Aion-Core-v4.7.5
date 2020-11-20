@@ -33,7 +33,7 @@ import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.gameserver.dao.MySQL5DAOUtils;
 import com.aionemu.gameserver.dao.PlayerWorldBanDAO;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.mysql.jdbc.exceptions.MySQLDataException;
+import java.sql.SQLDataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +63,7 @@ public class MySQL5PlayerWorldBanDAO extends PlayerWorldBanDAO {
             }
             rs.close();
             stmt.close();
-        } catch (MySQLDataException mde) {
+        } catch (SQLDataException mde) {
         } catch (Exception e) {
             log.error("cannot load world ban for player #" + player.getObjectId());
             log.warn(e.getMessage());
@@ -98,7 +98,7 @@ public class MySQL5PlayerWorldBanDAO extends PlayerWorldBanDAO {
                 log.warn("player #" + playerObjId + " already banned");
                 result = false;
             }
-        } catch (MySQLDataException mde) {
+        } catch (SQLDataException mde) {
             result = false;
         } catch (Exception e) {
             log.error("cannot insert world ban for player #" + playerObjId);
@@ -121,7 +121,7 @@ public class MySQL5PlayerWorldBanDAO extends PlayerWorldBanDAO {
             stmt.setInt(1, playerObjId);
             stmt.execute();
             stmt.close();
-        } catch (MySQLDataException mde) {
+        } catch (SQLDataException mde) {
         } catch (Exception e) {
             log.error("cannot delete world ban for player #" + playerObjId);
             log.warn(e.getMessage());
