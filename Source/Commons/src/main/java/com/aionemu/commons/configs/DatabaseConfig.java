@@ -30,7 +30,6 @@
 package com.aionemu.commons.configs;
 
 import com.aionemu.commons.configuration.Property;
-
 import java.io.File;
 
 /**

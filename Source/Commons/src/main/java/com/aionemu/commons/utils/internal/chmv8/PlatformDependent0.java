@@ -30,7 +30,7 @@
 package com.aionemu.commons.utils.internal.chmv8;
 
 import com.aionemu.commons.utils.SystemPropertyUtil;
-import sun.misc.Cleaner;
+import jdk.internal.ref.Cleaner;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;

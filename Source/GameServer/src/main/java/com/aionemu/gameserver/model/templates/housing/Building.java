@@ -30,7 +30,7 @@
 package com.aionemu.gameserver.model.templates.housing;
 
 import com.aionemu.gameserver.dataholders.DataManager;
-import com.mysql.jdbc.StringUtils;
+import com.mysql.cj.util.StringUtils;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;

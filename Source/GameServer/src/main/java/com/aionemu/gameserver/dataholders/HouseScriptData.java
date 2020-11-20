@@ -112,7 +112,7 @@ public class HouseScriptData {
             try {
                 final Document document = parseXmlFile(unformattedXml);
 
-                OutputFormat format = new OutputFormat(document);
+                OutputFormat format = new OutputFormat("XML", "UTF-16", true);
                 format.setIndenting(true);
                 format.setIndent(2);
                 format.setEncoding("UTF-16");

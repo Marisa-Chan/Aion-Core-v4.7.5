@@ -29,7 +29,7 @@
  */
 package com.aionemu.commons.scripting.impl.javacompiler;
 
-import com.sun.tools.javac.file.BaseFileObject;
+//import com.aionemu.commons.scripting.impl.javacompiler.BaseFileObject;
 
 import java.io.*;
 import java.net.URI;
