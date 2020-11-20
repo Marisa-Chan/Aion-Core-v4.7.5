@@ -52,8 +52,6 @@
                     <archive>
                         <manifest>
                             <mainClass>com.aionemu.gameserver.GameServer</mainClass>
-                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
-                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
                         </manifest>
                     </archive>
                 </configuration>
