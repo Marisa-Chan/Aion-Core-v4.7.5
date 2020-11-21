@@ -175,7 +175,7 @@ public class ScriptCompilerImpl implements ScriptCompiler {
      * @throws RuntimeException if compilation failed with errros
      */
     protected CompilationResult doCompilation(Iterable<JavaFileObject> compilationUnits) {
-        List<String> options = Arrays.asList("-encoding", "UTF-8", "-g");
+        List<String> options = Arrays.asList("-encoding", "UTF-8", "-g", "-Xlint:deprecation");
         DiagnosticListener<JavaFileObject> listener = new ErrorListener();
         ClassFileManager manager = new ClassFileManager(JavacTool.create(), listener);
         manager.setParentClassLoader(parentClassLoader);
