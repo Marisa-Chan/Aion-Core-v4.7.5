@@ -36,6 +36,7 @@ import com.aionemu.gameserver.taskmanager.fromdb.handler.TaskFromDBHandler;
 import com.aionemu.gameserver.taskmanager.fromdb.handler.TaskFromDBHandlerHolder;
 import com.aionemu.gameserver.taskmanager.fromdb.trigger.TaskFromDBTrigger;
 import com.aionemu.gameserver.taskmanager.fromdb.trigger.TaskFromDBTriggerHolder;
+import java.lang.reflect.InvocationTargetException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,8 +69,8 @@ public class MySQL5TaskFromDBDAO extends TaskFromDBDAO {
 
             while (rset.next()) {
                 try {
-                    TaskFromDBTrigger trigger = TaskFromDBTriggerHolder.valueOf(rset.getString("trigger_type")).getTriggerClass().newInstance();
-                    TaskFromDBHandler handler = TaskFromDBHandlerHolder.valueOf(rset.getString("task_type")).getTaskClass().newInstance();
+                    TaskFromDBTrigger trigger = TaskFromDBTriggerHolder.valueOf(rset.getString("trigger_type")).getTriggerClass().getDeclaredConstructor().newInstance();
+                    TaskFromDBHandler handler = TaskFromDBHandlerHolder.valueOf(rset.getString("task_type")).getTaskClass().getDeclaredConstructor().newInstance();
 
                     handler.setTaskId(rset.getInt("id"));
 
@@ -90,6 +91,14 @@ public class MySQL5TaskFromDBDAO extends TaskFromDBDAO {
                 } catch (InstantiationException ex) {
                     log.error(ex.getMessage(), ex);
                 } catch (IllegalAccessException ex) {
+                    log.error(ex.getMessage(), ex);
+                } catch (NoSuchMethodException ex) {
+                    log.error(ex.getMessage(), ex);
+                } catch (SecurityException ex) {
+                    log.error(ex.getMessage(), ex);
+                } catch (IllegalArgumentException ex) {
+                    log.error(ex.getMessage(), ex);
+                } catch (InvocationTargetException ex) {
                     log.error(ex.getMessage(), ex);
                 }
             }
