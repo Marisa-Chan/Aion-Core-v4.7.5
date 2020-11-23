@@ -41,8 +41,7 @@ import com.aionemu.gameserver.services.teleport.TeleportService2;
 
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
-import static org.hamcrest.Matchers.equalTo;
+import java.util.stream.Collectors;
 
 /**
  * @author xTz
@@ -127,6 +126,6 @@ public class AutoGeneralInstance extends AutoInstance {
     }
 
     private List<AGPlayer> getPlayersByClass(PlayerClass playerClass) {
-        return select(players, having(on(AGPlayer.class).getPlayerClass(), equalTo(playerClass)));
+        return players.values().stream().filter(pl -> pl.getPlayerClass() == playerClass).collect(Collectors.toList()); //select(players, having(on(AGPlayer.class).getPlayerClass(), equalTo(playerClass)));
     }
 }

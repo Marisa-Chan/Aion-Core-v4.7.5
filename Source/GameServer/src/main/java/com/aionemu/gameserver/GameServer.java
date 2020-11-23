@@ -47,7 +47,6 @@ import com.aionemu.gameserver.services.ecfunctions.oneVsone.OneVsOneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.lambdaj.Lambda;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -269,7 +268,6 @@ public class GameServer {
     public static void main(String[] args) {
     	
         long startTime = System.currentTimeMillis();
-        Lambda.enableJitting(true);
         final GameEngine[] parallelEngines = new GameEngine[]{QuestEngine.getInstance(), InstanceEngine.getInstance(),
                 											  AI2Engine.getInstance(), ChatProcessor.getInstance()};
         final CountDownLatch progressLatch = new CountDownLatch(parallelEngines.length);

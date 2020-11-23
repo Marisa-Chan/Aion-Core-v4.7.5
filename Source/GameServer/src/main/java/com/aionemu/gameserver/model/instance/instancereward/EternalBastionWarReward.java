@@ -48,8 +48,7 @@ import org.apache.commons.lang.mutable.MutableInt;
 import java.util.Comparator;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sort;
+import java.util.stream.Collectors;
 
 /**
  * @author Eloann
@@ -120,12 +119,8 @@ public class EternalBastionWarReward extends InstanceReward<EternalBastionWarPla
     }
 
     public List<EternalBastionWarPlayerReward> sortPoints() {
-        return sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o2 != null ? o2.compareTo(o1) : -o1.compareTo(o2);
-            }
-        });
+        //sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
+        return getInstanceRewards().stream().sorted(Comparator.comparing(EternalBastionWarPlayerReward::getScorePoints).reversed()).collect(Collectors.toList());
     }
 
     private void setStartPositions() {

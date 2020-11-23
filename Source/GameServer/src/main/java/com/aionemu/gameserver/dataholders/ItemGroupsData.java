@@ -44,9 +44,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 import java.util.*;
 
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.selectDistinct;
-import static ch.lambdaj.collection.LambdaCollections.with;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * @author Rolandas
@@ -208,7 +207,7 @@ public class ItemGroupsData {
                 continue;
             }
             FastSet<Integer> itemIds = FastSet.newInstance();
-            itemIds.addAll(selectDistinct(with(food).extract(on(ItemRaceEntry.class).getId())));
+            itemIds.addAll(food.stream().map(ire -> ire.getId()).distinct().collect(Collectors.toList())); //selectDistinct(with(food).extract(on(ItemRaceEntry.class).getId())));
             petFood.put(foodType, itemIds);
             if (foodType != FoodType.EXCLUDES && foodType != FoodType.STINKY) {
                 petFoodCount += itemIds.size();

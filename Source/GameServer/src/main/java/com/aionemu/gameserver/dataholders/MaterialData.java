@@ -36,8 +36,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 import java.util.*;
 
-import static ch.lambdaj.Lambda.extract;
-import static ch.lambdaj.Lambda.on;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * @author Rolandas
@@ -62,7 +62,7 @@ public class MaterialData {
         for (MaterialTemplate template : materialTemplates) {
             materialsById.put(template.getId(), template);
             if (template.getSkills() != null) {
-                skillIds.addAll(extract(template.getSkills(), on(MaterialSkill.class).getId()));
+                skillIds.addAll( template.getSkills().stream().map(s -> s.getId()).collect(Collectors.toList()) ); //.extract(template.getSkills(), on(MaterialSkill.class).getId()));
             }
         }
 

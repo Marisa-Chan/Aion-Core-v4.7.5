@@ -29,7 +29,6 @@
  */
 package com.aionemu.gameserver.spawnengine;
 
-import ch.lambdaj.group.Group;
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.gameobjects.Npc;
@@ -38,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static ch.lambdaj.Lambda.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Rolandas
@@ -78,13 +77,13 @@ public class InstanceWalkerFormations {
      */
     protected void organizeAndSpawn() {
         for (List<ClusteredNpc> candidates : groupedSpawnObjects.values()) {
-            Group<ClusteredNpc> bySize = group(candidates, by(on(ClusteredNpc.class).getPositionHash()));
-            Set<String> keys = bySize.keySet();
+            Map<Integer, List<ClusteredNpc>> bySize = candidates.stream().collect(Collectors.groupingBy(ClusteredNpc::getPositionHash));// Group<ClusteredNpc> bySize =  group(candidates, by(on(ClusteredNpc.class).getPositionHash()));
+            Set<Integer> keys = bySize.keySet();
             int maxSize = 0;
             List<ClusteredNpc> npcs = null;
-            for (String key : keys) {
-                if (bySize.find(key).size() > maxSize) {
-                    npcs = bySize.find(key);
+            for (Integer key : keys) {
+                if (bySize.get(key).size() > maxSize) {
+                    npcs = bySize.get(key);
                     maxSize = npcs.size();
                 }
             }
@@ -152,7 +151,7 @@ public class InstanceWalkerFormations {
         if (varGroups == null) {
             return;
         }
-        List<WalkerGroup> notSpawned = select(varGroups, having(!on(WalkerGroup.class).isSpawned()));
+        List<WalkerGroup> notSpawned = varGroups.stream().filter(t -> t.isSpawned() == false).collect(Collectors.toList()); // select(varGroups, having(!on(WalkerGroup.class).isSpawned()));
         WalkerGroup newGroup = notSpawned.get(Rnd.get(notSpawned.size()));
         newGroup.spawn();
         if (walkerGroup.isSpawned()) {
@@ -173,7 +172,7 @@ public class InstanceWalkerFormations {
         if (varWalkers == null) {
             return;
         }
-        List<ClusteredNpc> notSpawned = select(varWalkers, having(!on(ClusteredNpc.class).getNpc().isSpawned()));
+        List<ClusteredNpc> notSpawned = varWalkers.stream().filter(t -> t.getNpc().isSpawned() == false).collect(Collectors.toList()); // select(varWalkers, having(!on(ClusteredNpc.class).getNpc().isSpawned()));
         ClusteredNpc newWalker = notSpawned.get(Rnd.get(notSpawned.size()));
         newWalker.spawn(newWalker.getNpc().getZ());
         if (!npc.isSpawned()) {

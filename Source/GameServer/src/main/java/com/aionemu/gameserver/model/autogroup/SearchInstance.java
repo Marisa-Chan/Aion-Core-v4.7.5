@@ -34,8 +34,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import java.util.Collection;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.extract;
-import static ch.lambdaj.Lambda.on;
+import java.util.stream.Collectors;
 
 /**
  * @author xTz
@@ -52,7 +51,7 @@ public class SearchInstance {
         this.instanceMaskId = instanceMaskId;
         this.ert = ert;
         if (members != null) {
-            this.members = extract(members, on(Player.class).getObjectId());
+            this.members = members.stream().map(Player::getObjectId).collect(Collectors.toList()); //extract(members, on(Player.class).getObjectId());
         }
     }
 

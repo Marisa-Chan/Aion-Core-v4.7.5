@@ -29,12 +29,10 @@
  */
 package com.aionemu.gameserver.model.stats.calc.functions;
 
-import static ch.lambdaj.Lambda.forEach;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.selectMax;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.aionemu.gameserver.model.gameobjects.Item;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -253,9 +251,9 @@ class DuplicateStatFunction extends StatFunction {
             }
             if (!functions.isEmpty()) {
                 if (getName() == StatEnum.PVP_ATTACK_RATIO) {
-                    forEach(functions).apply(stat);
+                    functions.forEach(func -> func.apply(stat));
                 } else {
-                    ((StatFunction) selectMax(functions, on(StatFunction.class).getValue())).apply(stat);
+                    Collections.max(functions, Comparator.comparing(v -> v.getValue())).apply(stat);
                 }
                 functions.clear();
             }

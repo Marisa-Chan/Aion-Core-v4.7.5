@@ -35,9 +35,7 @@ import javolution.util.FastMap;
 
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
+import java.util.stream.Collectors;
 
 /**
  * @author KID
@@ -165,11 +163,11 @@ public class ItemStorage {
     }
 
     public List<Item> getSpecialCubeItems() {
-        return select(items.values(), having(on(Item.class).getItemTemplate().getExtraInventoryId(), greaterThan(0)));
+        return items.values().stream().filter(t -> t.getItemTemplate().getExtraInventoryId() > 0).collect(Collectors.toList()); //select(items.values(), having(on(Item.class).getItemTemplate().getExtraInventoryId(), greaterThan(0)));
     }
 
     public List<Item> getCubeItems() {
-        return select(items.values(), having(on(Item.class).getItemTemplate().getExtraInventoryId(), lessThan(1)));
+        return items.values().stream().filter(t -> t.getItemTemplate().getExtraInventoryId() < 1).collect(Collectors.toList()); //select(items.values(), having(on(Item.class).getItemTemplate().getExtraInventoryId(), lessThan(1)));
     }
 
     public int getFreeSlots() {

@@ -42,7 +42,7 @@ import javolution.util.FastList;
 import java.util.Comparator;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
+import java.util.stream.Collectors;
 
 /**
  * @author xTz
@@ -117,17 +117,19 @@ public class HarmonyArenaReward extends PvPArenaReward {
     }
 
     public List<HarmonyGroupReward> sortGroupPoints() {
-        return sort(groups, on(HarmonyGroupReward.class).getPoints(), new Comparator<Integer>() {
+        /*return sort(groups, on(HarmonyGroupReward.class).getPoints(), new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
                 return o2 != null ? o2.compareTo(o1) : -o1.compareTo(o2);
             }
-        });
+        });*/
+        return groups.stream().sorted(Comparator.comparing(HarmonyGroupReward::getPoints).reversed()).collect(Collectors.toList());
     }
 
     @Override
     public int getTotalPoints() {
-        return sum(groups, on(HarmonyGroupReward.class).getPoints());
+        //return sum(groups, on(HarmonyGroupReward.class).getPoints());
+        return groups.stream().mapToInt(HarmonyGroupReward::getPoints).sum();
     }
 
     @Override

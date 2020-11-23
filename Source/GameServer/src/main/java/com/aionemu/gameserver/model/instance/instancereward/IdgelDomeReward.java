@@ -29,8 +29,7 @@
  */
 package com.aionemu.gameserver.model.instance.instancereward;
 
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sort;
+import java.util.stream.Collectors;
 
 import java.util.Comparator;
 import java.util.List;
@@ -144,12 +143,13 @@ public class IdgelDomeReward extends InstanceReward<IdgelDomePlayerReward> {
     }    
     
     public List<IdgelDomePlayerReward> sortPoints() {
-        return sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
+        /*return sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
                 return o2 != null ? o2.compareTo(o1) : -o1.compareTo(o2);
             }
-        });
+        });*/
+        return getInstanceRewards().stream().sorted(Comparator.comparing(IdgelDomePlayerReward::getScorePoints).reversed()).collect(Collectors.toList());
     }
 
     public void portToPosition(Player player) 

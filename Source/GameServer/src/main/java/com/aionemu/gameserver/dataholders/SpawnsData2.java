@@ -71,7 +71,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * @author xTz
@@ -249,7 +250,7 @@ public class SpawnsData2 {
         if (!allSpawnMaps.containsKey(worldId)) {
             return Collections.emptyList();
         }
-        return flatten(extractIterator(allSpawnMaps.get(worldId).values(), on(SimpleEntry.class).getKey()));
+        return allSpawnMaps.get(worldId).values().stream().map(v -> v.getKey()).collect(Collectors.toList()); // flatten(extractIterator(allSpawnMaps.get(worldId).values(), on(SimpleEntry.class).getKey()));
     }
 
     public Spawn getSpawnsForNpc(int worldId, int npcId) {

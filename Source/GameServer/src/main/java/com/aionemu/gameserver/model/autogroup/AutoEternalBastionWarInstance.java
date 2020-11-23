@@ -39,8 +39,7 @@ import com.aionemu.gameserver.services.instance.IronWallWarFrontService;
 
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
-import static org.hamcrest.Matchers.equalTo;
+import java.util.stream.Collectors;
 
 public class AutoEternalBastionWarInstance extends AutoInstance {
 
@@ -108,10 +107,10 @@ public class AutoEternalBastionWarInstance extends AutoInstance {
     }
 
     private List<AGPlayer> getAGPlayersByRace(Race race) {
-        return select(players, having(on(AGPlayer.class).getRace(), equalTo(race)));
+        return players.values().stream().filter(pl -> pl.getRace() == race).collect(Collectors.toList()); //select(players, having(on(AGPlayer.class).getRace(), equalTo(race)));
     }
 
     private List<Player> getPlayersByRace(Race race) {
-        return select(instance.getPlayersInside(), having(on(Player.class).getRace(), equalTo(race)));
+        return instance.getPlayersInside().stream().filter(pl -> pl.getRace() == race).collect(Collectors.toList()); //select(instance.getPlayersInside(), having(on(Player.class).getRace(), equalTo(race)));
     }
 }

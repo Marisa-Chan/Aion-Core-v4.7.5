@@ -29,12 +29,6 @@
  */
 package com.aionemu.gameserver.model.templates.item.actions;
 
-import static ch.lambdaj.Lambda.having;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.select;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -84,6 +78,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
 import com.aionemu.gameserver.utils.i18n.CustomMessageId;
 import com.aionemu.gameserver.utils.i18n.LanguageHandler;
 import com.aionemu.gameserver.world.World;
+import java.util.stream.Collectors;
 
 /**
  * @author oslo(a00441234)
@@ -320,8 +315,10 @@ public class DecomposeAction extends AbstractItemAction {
 	                                            } else if (randomType.name().contains("EPIC")) {
 	                                                itemQuality = ItemQuality.EPIC;
 	                                            }
-	                                            
-	                                            List<ItemTemplate> selectedStones = select(stones, having(on(ItemTemplate.class).getItemQuality(), equalTo(itemQuality)));
+	                                            final ItemQuality quality = itemQuality;
+	                                            List<ItemTemplate> selectedStones = stones.stream()
+                                                            .filter(t -> t.getItemQuality() == quality)
+                                                            .collect(Collectors.toList()); //select(stones, having(on(ItemTemplate.class).getItemQuality(), equalTo(itemQuality)));
 	                                            if (selectedStones.size() == 0) {
 	                                            	randomId = 0;
 	                                            	break;
@@ -329,7 +326,7 @@ public class DecomposeAction extends AbstractItemAction {
 	                                            
 	                                            randomId = selectedStones.get(Rnd.get(selectedStones.size() - 1)).getTemplateId();
 	                                        } else {
-	                                            List<ItemTemplate> selectedStones = select(stones, having(on(ItemTemplate.class).getItemQuality(), not(equalTo(ItemQuality.LEGEND))));
+	                                            List<ItemTemplate> selectedStones = stones.stream().filter(t -> t.getItemQuality() != ItemQuality.LEGEND).collect(Collectors.toList()); //select(stones, having(on(ItemTemplate.class).getItemQuality(), not(equalTo(ItemQuality.LEGEND))));
 	                                            randomId = selectedStones.get(Rnd.get(selectedStones.size() - 1)).getTemplateId();
 	                                        }
 	                                        break;

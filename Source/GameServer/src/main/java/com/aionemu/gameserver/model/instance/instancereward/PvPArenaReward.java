@@ -41,7 +41,7 @@ import javolution.util.FastList;
 
 import java.util.*;
 
-import static ch.lambdaj.Lambda.*;
+import java.util.stream.Collectors;
 
 /**
  * @author xTz
@@ -169,12 +169,13 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
     }
 
     public List<PvPArenaPlayerReward> sortPoints() {
-        return sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
+        /*return sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
                 return o2 != null ? o2.compareTo(o1) : -o1.compareTo(o2);
             }
-        });
+        });*/
+        return getInstanceRewards().stream().sorted(Comparator.comparing(PvPArenaPlayerReward::getScorePoints).reversed()).collect(Collectors.toList());
     }
 
     public boolean canRewardOpportunityToken(PvPArenaPlayerReward rewardedPlayer) {
@@ -196,14 +197,16 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
     }
 
     public boolean hasCapPoints() {
-        if (isSoloArena() && (maxFrom(getInstanceRewards()).getPoints() - minFrom(getInstanceRewards()).getPoints() >= 1500)) {
+        int maxPoints = getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getPoints).max().getAsInt();
+        int minPoints = getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getPoints).min().getAsInt();
+        if (isSoloArena() && (maxPoints - minPoints >= 1500)) {
             return true;
         }
-        return maxFrom(getInstanceRewards()).getPoints() >= capPoints;
+        return maxPoints >= capPoints;
     }
 
     public int getTotalPoints() {
-        return sum(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints());
+        return getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getScorePoints).sum(); //sum(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints());
     }
 
     public boolean canRewarded() {

@@ -39,9 +39,8 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
-import static ch.lambdaj.Lambda.*;
-import static org.hamcrest.Matchers.equalTo;
 
 /**
  * @author Simple
@@ -520,7 +519,7 @@ public class Legion {
         if (legionHistory.isEmpty()) {
             return legionHistory;
         }
-        return select(legionHistory, having(on(LegionHistory.class).getTabId(), equalTo(tabType)));
+        return legionHistory.stream().filter(t -> t.getTabId() == tabType).collect(Collectors.toList());//select(legionHistory, having(on(LegionHistory.class).getTabId(), equalTo(tabType)));
     }
 
     /**

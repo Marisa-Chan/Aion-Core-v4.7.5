@@ -39,8 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sort;
+import java.util.Comparator;
 
 /**
  * @author xTz
@@ -62,7 +61,7 @@ public abstract class AutoInstance extends AbstractLockManager implements AutoIn
         if (i < count) {
             return false;
         }
-        items = sort(items, on(Item.class).getExpireTime());
+        items.sort(Comparator.comparing(Item::getExpireTime)); //items = sort(items, on(Item.class).getExpireTime());
         for (Item item : items) {
             long l = player.getInventory().decreaseItemCount(item, count);
             if (l == 0) {

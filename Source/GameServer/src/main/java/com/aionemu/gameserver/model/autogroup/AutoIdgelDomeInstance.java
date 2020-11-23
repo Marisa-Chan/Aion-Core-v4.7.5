@@ -29,10 +29,8 @@
  */
 package com.aionemu.gameserver.model.autogroup;
 
-import static ch.lambdaj.Lambda.having;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.select;
-import static org.hamcrest.Matchers.equalTo;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -114,10 +112,10 @@ public class AutoIdgelDomeInstance extends AutoInstance {
     }
 
     private List<AGPlayer> getAGPlayersByRace(Race race) {
-        return select(players, having(on(AGPlayer.class).getRace(), equalTo(race)));
+        return players.values().stream().filter(pl -> pl.getRace() == race).collect(Collectors.toList()); //select(players, having(on(AGPlayer.class).getRace(), equalTo(race)));
     }
 
     private List<Player> getPlayersByRace(Race race) {
-        return select(instance.getPlayersInside(), having(on(Player.class).getRace(), equalTo(race)));
+        return instance.getPlayersInside().stream().filter(pl -> pl.getRace() == race).collect(Collectors.toList()); //select(instance.getPlayersInside(), having(on(Player.class).getRace(), equalTo(race)));
     }
 }

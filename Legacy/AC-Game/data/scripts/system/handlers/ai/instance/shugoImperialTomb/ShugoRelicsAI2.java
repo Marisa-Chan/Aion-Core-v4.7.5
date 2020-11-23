@@ -47,7 +47,6 @@ import com.aionemu.gameserver.utils.audit.AuditLogger;
 import java.util.Collection;
 import java.util.HashSet;
 
-import static ch.lambdaj.Lambda.maxFrom;
 
 /**
  * @author Swig
@@ -95,7 +94,9 @@ public class ShugoRelicsAI2 extends ActionItemNpcAI2 {
         } else {
             players.add(player);
         }
-        DropRegistrationService.getInstance().registerDrop(getOwner(), player, maxFrom(players).getLevel(), players);
+        DropRegistrationService.getInstance().registerDrop(getOwner(), player
+                , players.stream().mapToInt(Player::getLevel).max().getAsInt()
+                , players);
         DropService.getInstance().requestDropList(player, getObjectId());
     }
 }

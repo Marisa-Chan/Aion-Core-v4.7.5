@@ -49,8 +49,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
-
 /**
  * @author ATracer, xTz
  */
@@ -94,7 +92,9 @@ public class ChestAI2 extends ActionItemNpcAI2 {
             } else {
                 players.add(player);
             }
-            DropRegistrationService.getInstance().registerDrop(getOwner(), player, maxFrom(players).getLevel(), players);
+            DropRegistrationService.getInstance().registerDrop(getOwner(), player
+                    , players.stream().mapToInt(Player::getLevel).max().getAsInt()
+                    , players);
             DropService.getInstance().requestDropList(player, getObjectId());
             super.handleUseItemFinish(player);
         } else {

@@ -49,8 +49,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-import static ch.lambdaj.Lambda.*;
-import static ch.lambdaj.collection.LambdaCollections.with;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * @author ATracer
@@ -126,10 +126,10 @@ public class AI2Engine implements GameEngine {
     }
 
     private void validateScripts() {
-        Collection<String> npcAINames = selectDistinct(with(DataManager.NPC_DATA.getNpcData().valueCollection()).extract(on(NpcTemplate.class).getAi()));
+        Collection<String> npcAINames = DataManager.NPC_DATA.getNpcData().valueCollection().stream().map(npc -> npc.getAi()).collect(Collectors.toSet());
         npcAINames.removeAll(aiMap.keySet());
         if (npcAINames.size() > 0) {
-            log.warn("Bad AI names: " + join(npcAINames));
+            log.warn("Bad AI names: " + npcAINames.stream().collect(Collectors.joining(", ")));
         }
     }
 

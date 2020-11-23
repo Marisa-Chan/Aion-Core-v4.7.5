@@ -43,8 +43,7 @@ import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import java.io.IOException;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
-import static org.hamcrest.Matchers.*;
+import java.util.stream.Collectors;
 
 /**
  * @author KID
@@ -212,8 +211,9 @@ public class SpawnUpdate extends AdminCommand {
                         return;
                     }
                     List<SpawnGroup2> allSpawns = DataManager.SPAWNS_DATA2.getSpawnsByWorldId(npc.getWorldId());
-                    List<SpawnTemplate> allSpots = flatten(extractIterator(allSpawns, on(SpawnGroup2.class).getSpawnTemplates()));
-                    List<SpawnTemplate> sameIds = filter(having(on(SpawnTemplate.class).getWalkerId(), equalTo(walkerId)), allSpots);
+                    List<SpawnTemplate> allSpots = allSpawns.stream().flatMap(t -> t.getSpawnTemplates().stream()).collect(Collectors.toList()); //flatten(extractIterator(allSpawns, on(SpawnGroup2.class).getSpawnTemplates()));
+                    final String finWalkerId = walkerId;
+                    List<SpawnTemplate> sameIds = allSpots.stream().filter(t -> t.getWalkerId().equals(finWalkerId)).collect(Collectors.toList()); //filter(having(on(SpawnTemplate.class).getWalkerId(), equalTo(walkerId)), allSpots);
                     if (sameIds.size() >= template.getPool()) {
                         PacketSendUtility.sendMessage(admin, "Can not assign, walker pool reached the limit.");
                         return;
